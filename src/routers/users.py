@@ -100,7 +100,6 @@ async def update_user(id: int, updated_user: schemas.UserUpdate,
         updated_user.email = current_user.email
 
 
-
     user_query.update(updated_user.dict(), synchronize_session=False)
 
     db.commit()
@@ -120,10 +119,6 @@ async def update_user(id: int, updated_user: schemas.UserUpdate,
 #         return redirect
 
 #     return RedirectResponse(app.ui_router.url_path_for('home'))    
-
-
-
-
 
 
 
