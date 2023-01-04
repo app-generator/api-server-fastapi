@@ -8,7 +8,7 @@ Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via *
 
 - ✅ `Up-to-date dependencies` 
 - ❌ [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) - the unified API structure implemented by this server
-- ❌ `JWT Authentication` (login, logout, register) via `oauth2`
+- ✅ `JWT Authentication` (login, logout, register) via `oauth2`
 - ❌ `OAuth` for **Github**
 - ✅ `Persistence` for | `SQLite`, `MySql`
 
