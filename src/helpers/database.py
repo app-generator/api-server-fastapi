@@ -4,7 +4,8 @@ from sqlalchemy.orm import sessionmaker
 from src.config import settings
 
 SQLITE_URI = 'sqlite:///./src/apidata.db'
-MYSQL_URI = f'mysql://{settings.database_username}:{settings.database_password}@{settings.database_port}/{settings.database_name}'
+# MYSQL_URI = f'mysql://{settings.database_username}:{settings.database_password}@{settings.database_port}/{settings.database_name}'
+MYSQL_URI = f'mysql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}/{settings.database_name}'
 
 if (settings.debugging):
     engine = create_engine(SQLITE_URI, connect_args={'check_same_thread': False})
