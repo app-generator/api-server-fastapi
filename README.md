@@ -6,13 +6,13 @@ Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via *
 
 > Features:
 
-- ✅ `Up-to-date dependencies` 
-- ✅ [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) - the unified API structure implemented by this server
-- ✅ API powered by `Flask-restX` 
-- ✅ `JWT Authentication` (login, logout, register) via `Flask-jwt_extended`
-- 🆕 `OAuth` for **Github**
+- ❌ `Up-to-date dependencies` 
+- ❌ [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) - the unified API structure implemented by this server
+- ❌ `JWT Authentication` (login, logout, register) via `Flask-jwt_extended`
+- ❌ `OAuth` for **Github**
   - Full-stack ready with [React Soft Dashboard](https://github.com/app-generator/react-soft-ui-dashboard)
-- ✅ **Docker**, `Unitary tests`
+- ❌ **Docker** 
+- ❌ `Unitary tests`
 
 <br />
 
@@ -21,8 +21,8 @@ Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via *
 > Get the code
 
 ```bash
-$ git clone https://github.com/app-generator/api-server-flask.git
-$ cd api-server-flask
+$ git clone https://github.com/app-generator/api-server-fastapi.git
+$ cd api-server-fastapi
 ```
 
 > Start the app in Docker
