@@ -8,8 +8,10 @@ Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via *
 
 - ✅ `Up-to-date dependencies` 
 - ❌ [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) - the unified API structure implemented by this server
-- ❌ `JWT Authentication` (login, logout, register) via `Flask-jwt_extended`
+- ❌ `JWT Authentication` (login, logout, register) via `oauth2`
 - ❌ `OAuth` for **Github**
+- ❌ `Persistence` for | `SQLite`, `MySql`
+
   - Full-stack ready with [React Soft Dashboard](https://github.com/app-generator/react-soft-ui-dashboard)
 - ❌ **Docker** 
 - ❌ `Unitary tests`
