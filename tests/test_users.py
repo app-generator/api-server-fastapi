@@ -104,5 +104,19 @@ def test_login_fail_email(client, test_user: schemas.UserOut):
     assert res_json['detail'] == 'Invalid Credentials'
     assert res.status_code == 403
 
+def test_update_user_username_successful(authorized_client, test_user: schemas.UserOut):
+    res = authorized_client.put(f"/api/users/{test_user['id']}", json={
+        "username" : 'testme'
+    })
+    res_json = res.json()
+    assert res_json['id'] == test_user['id']
+    assert res_json['username'] == 'testme'
 
-# def test_update_user()
+def test_update_user_email_successful(authorized_client, test_user: schemas.UserOut):
+    res = authorized_client.put(f"/api/users/{test_user['id']}", json={
+        "email" : 'test_update@gmail.com'
+    })
+    res_json = res.json()
+
+    assert res_json['id'] == test_user['id']
+    assert res_json['email'] == 'test_update@gmail.com'
