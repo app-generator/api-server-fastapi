@@ -4,7 +4,7 @@ Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via *
 
 <br />
 
-> Features:
+> Product Roadmap & `Features`:
 
 | Status | Item | info | 
 | --- | --- | --- |
