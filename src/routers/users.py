@@ -1,4 +1,4 @@
-from fastapi import status, HTTPException, Depends, APIRouter
+from fastapi import status, HTTPException, Depends, APIRouter, Request
 from fastapi.responses import RedirectResponse, HTMLResponse
 
 from sqlalchemy.orm import Session
@@ -10,6 +10,7 @@ import src.oauth2 as oauth2
 from src.helpers.database import get_db
 from src.helpers.utils import hash, verify
 
+from jose import JWTError
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
 
@@ -19,23 +20,23 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.UserOut])
-async def get_users(db: Session = Depends(get_db)):
-    users = db.query(models.User).all()
+# @router.get('/', response_model=List[schemas.UserOut])
+# async def get_users(db: Session = Depends(get_db)):
+#     users = db.query(models.User).all()
 
-    if not users:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User Was Not Found')
+#     if not users:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User Was Not Found')
 
-    return users
+#     return users
 
-@router.get('/{id}', response_model=schemas.UserOut)
-async def get_user(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == id).first()
+# @router.get('/{id}', response_model=schemas.UserOut)
+# async def get_user(id: int, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.id == id).first()
 
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User Was Not Found')
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User Was Not Found')
 
-    return user
+#     return user
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
@@ -69,6 +70,9 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Ses
             "access_token" : access_token,
             "token_type" : "bearer"
     }
+
+
+
 
 
 @router.put('/{id}', response_model=schemas.UserOut)
@@ -109,6 +113,29 @@ async def update_user(id: int, updated_user: schemas.UserUpdate,
 
 
 
+@router.get('/checkSession', response_model=schemas.Token)
+# @router.get('/checkSession')
+async def check_session(request: Request, current_user: int = Depends(oauth2.get_current_user)):
+    credentials_exception = HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+                headers={"WWW-Authenticate" : "Bearer"}
+    )
+
+    bearer_token = request.headers.get('authorization')
+
+    if (bearer_token):
+        token_type, token = bearer_token.split(' ')
+        verified = oauth2.verify_access_token(token, credentials_exception)
+        return {
+            "access_token" : token,
+            "token_type" : 'bearer'
+        }
+    
+    raise JWTError
+
+
+
 # @router.get('/logout', response_model=schemas.Token)
 # async def logout(request: Request, response_model=HTMLResponse):
 #     auth_token  = request.cookies.get('Authorization')
@@ -124,4 +151,3 @@ async def update_user(id: int, updated_user: schemas.UserUpdate,
 
 # logout
 # check session
-# edit
