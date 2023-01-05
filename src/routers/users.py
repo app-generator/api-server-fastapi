@@ -111,7 +111,6 @@ async def update_user(id: int, updated_user: schemas.UserUpdate,
     return user_query.first()
 
 @router.get('/checkSession', response_model=schemas.Token)
-# @router.get('/checkSession')
 async def check_session(request: Request, current_user: int = Depends(oauth2.get_current_user)):
     credentials_exception = HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -162,21 +161,9 @@ async def authorize_github(request: Request):
         headers = {"Authorization": access_token}
         resp = requests.get(url=url, headers=headers)
         userData = resp.json()
-        print (userData)
-
-        # redirect = RedirectResponse(url=app.ui_router.url_path_for('index'))
-        # redirect.status_code = 302
-        # redirect.set_cookie('github-Account', access_token)
-        # return redirect
         return userData
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing Authorization Code")
-
-
-# @router.get('/api/sessions/oauth/github/')
-# async def GitHubLogin(Resource):
-#     def get(self):
-#         pass
 
 
 # @router.get('/logout', response_model=schemas.Token)
@@ -189,7 +176,3 @@ async def authorize_github(request: Request):
 #         return redirect
 
 #     return RedirectResponse(app.ui_router.url_path_for('home'))    
-
-
-
-# logout

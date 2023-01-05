@@ -31,19 +31,78 @@ def test_checkSession_success(authorized_client):
     assert res.status_code == 200
     assert token_type == 'bearer'
 
-    
-def test_registration_success(client):
+
+
+@pytest.mark.parametrize("username, email, password, status_code", [
+    (
+        "testy", "testy@gmail.com", "password123", 201
+    ),
+    (
+        "testy2", "testy2@gmail.com", "password123", 201
+    ),
+    (
+        "testy3", "testy3@gmail.com", "password123", 201
+    ),
+])
+def test_registration_success(client, username, email, password, status_code):
     res = client.post('/api/users/register', json={
-        "username" : "Testy",
-        "email" : "testy@gmail.com",
+        "username" : username,
+        "email" : email,
+        "password" : password
+    })
+    res_json = res.json()
+    assert res.status_code == status_code
+    assert username == res_json['username']
+    assert email == res_json['email']
+
+
+def test_registration_fail(client):
+    res = client.post('/api/users/register', json={
+        "username" : "somebad",
+        "email" : "bademail",
         "password" : "password123"
+    })
+    
+    res_json = res.json()
+    
+    assert res.status_code == 422
+
+
+def test_login_success(client, test_user: schemas.UserOut):
+    res = client.post("/api/users/login", data={
+        "username" : test_user['email'],
+        "password" : test_user['password']
+    })
+
+    login_res = schemas.Token(**res.json())
+
+    payload = jwt.decode(login_res.access_token, settings.secret_key, algorithms=[settings.algorithm])
+
+    id = payload.get('user_id')
+
+    assert id == test_user['id']
+    assert login_res.token_type == "bearer"
+    assert res.status_code == 200
+
+def test_login_fail_password(client, test_user: schemas.UserOut):
+    res = client.post("/api/users/login", data={
+        "username" : test_user['email'],
+        "password" : "badpassword"
     })
 
     res_json = res.json()
+    assert res_json['detail'] == 'Invalid Credentials'
+    assert res.status_code == 403
 
-    assert res.status_code == 201
-    print (res_json)
-    # print (res.status_code)
-    # print('\n\n')
+def test_login_fail_email(client, test_user: schemas.UserOut):
+    res = client.post("/api/users/login", data={
+        "username" : 'bademail',
+        "password" : test_user['password']
+    })
 
-    
+    res_json = res.json()
+    assert res_json['detail'] == 'Invalid Credentials'
+    assert res.status_code == 403
+
+
+# def test_update_user()
