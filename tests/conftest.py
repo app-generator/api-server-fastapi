@@ -9,7 +9,7 @@ from src.app import app as root_app
 from src.helpers.database import Base, get_db
 from src.oauth2 import create_access_token
 
-SQLITE_DATABASE_URL = 'sqlite:///./sql_app_test.db'
+SQLITE_DATABASE_URL = 'sqlite:///./apidata.db'
 
 engine = create_engine(SQLITE_DATABASE_URL, connect_args={'check_same_thread': False})
 
