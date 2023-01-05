@@ -13,7 +13,7 @@ Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via *
 | ✅ | `JWT Authentication` |  (login, logout, register) via `oauth2` |
 | ✅ | **OAuth** | via GitHub` |
 | ✅ | **Persistence** | `SQLite`, `MySql` |
-| ❌ | **Docker** | - |
+| ✅ | **Docker** | - |
 | ✅ | **Unitary tests** | `minimal suite` |
 
 <br />
