@@ -1,5 +1,5 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Request
-from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi.responses import RedirectResponse
 
 from sqlalchemy.orm import Session
 from typing import List
@@ -9,9 +9,12 @@ import src.models as models
 import src.oauth2 as oauth2
 from src.helpers.database import get_db
 from src.helpers.utils import hash, verify
+from src.config import settings
 
 from jose import JWTError
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+
+import requests
 
 
 router = APIRouter(
@@ -107,9 +110,6 @@ async def update_user(id: int, updated_user: schemas.UserUpdate,
 
     return user_query.first()
 
-
-
-
 @router.get('/checkSession', response_model=schemas.Token)
 # @router.get('/checkSession')
 async def check_session(request: Request, current_user: int = Depends(oauth2.get_current_user)):
@@ -130,6 +130,53 @@ async def check_session(request: Request, current_user: int = Depends(oauth2.get
         }
     
     raise JWTError
+
+
+@router.get("/github_login")
+async def github_login(request: Request):
+    if not settings.github_is_active:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing a Required Github Credential, check your environment variables")
+
+    github_login_url = f'https://github.com/login/oauth/authorize?client_id={settings.github_client_id}'
+    redirect = RedirectResponse(url=github_login_url)
+    redirect.status_code = 302
+    return redirect
+
+
+@router.get("/github_auth")
+async def authorize_github(request: Request):
+    authorization_code = request.query_params.get('code')
+    try:        
+        url = f'https://github.com/login/oauth/access_token?client_id={settings.github_client_id}&client_secret={settings.github_secret_key}&code={authorization_code}'
+        headers = {
+            'accept': 'application/json'
+        }
+        res = requests.post(url, headers=headers)
+
+        data = res.json()
+
+        access_token = data.get('access_token')
+
+        access_token = 'token ' + access_token
+        url = 'https://api.github.com/user'
+        headers = {"Authorization": access_token}
+        resp = requests.get(url=url, headers=headers)
+        userData = resp.json()
+        print (userData)
+
+        # redirect = RedirectResponse(url=app.ui_router.url_path_for('index'))
+        # redirect.status_code = 302
+        # redirect.set_cookie('github-Account', access_token)
+        # return redirect
+        return userData
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing Authorization Code")
+
+
+# @router.get('/api/sessions/oauth/github/')
+# async def GitHubLogin(Resource):
+#     def get(self):
+#         pass
 
 
 # @router.get('/logout', response_model=schemas.Token)
