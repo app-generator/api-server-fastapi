@@ -135,7 +135,6 @@ async def check_session(request: Request, current_user: int = Depends(oauth2.get
     raise JWTError
 
 
-
 # @router.get('/logout', response_model=schemas.Token)
 # async def logout(request: Request, response_model=HTMLResponse):
 #     auth_token  = request.cookies.get('Authorization')
@@ -150,4 +149,3 @@ async def check_session(request: Request, current_user: int = Depends(oauth2.get
 
 
 # logout
-# check session
