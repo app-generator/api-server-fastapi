@@ -33,7 +33,7 @@ $ cd api-server-fastapi
 $ docker-compose up --build  
 ```
 
-The API server will start using the PORT `5000`.
+The API server will start using the PORT `5085`.
 
 <br />
 
