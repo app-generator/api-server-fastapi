@@ -21,3 +21,7 @@ def get_db():
     finally:
         db.close()
 
+
+def get_session():
+    db = SessionLocal()
+    return db

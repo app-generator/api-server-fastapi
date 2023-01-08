@@ -110,7 +110,7 @@ async def update_user(id: int, updated_user: schemas.UserUpdate,
 
     return user_query.first()
 
-@router.get('/checkSession', response_model=schemas.Token)
+@router.get('/checkSession', response_model=schemas.Token, status_code=status.HTTP_200_OK)
 async def check_session(request: Request, current_user: int = Depends(oauth2.get_current_user)):
     credentials_exception = HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -166,13 +166,16 @@ async def authorize_github(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing Authorization Code")
 
 
-# @router.get('/logout', response_model=schemas.Token)
-# async def logout(request: Request, response_model=HTMLResponse):
-#     auth_token  = request.cookies.get('Authorization')
+@router.get('/logout', status_code=status.HTTP_200_OK)
+async def logout(request: Request, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+        
+    invalid_token = request.headers.get('authorization')
 
-#     if (auth_token):
-#         redirect = RedirectResponse(app.ui_router.url_path_for('signin'))
-#         redirect.set_cookie('Authorization', '')
-#         return redirect
+    new_blocked_token = schemas.blockedTokenCreate(jwt_token=invalid_token)
 
-#     return RedirectResponse(app.ui_router.url_path_for('home'))    
+    new_blocked_token_model = models.JWTTokenBlocklist(**new_blocked_token.dict())
+
+    db.add(new_blocked_token_model)
+    db.commit()
+
+    return {'success' : True}

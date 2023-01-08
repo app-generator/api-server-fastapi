@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from datetime import datetime
 
 class UserOut(BaseModel):
     id: int
@@ -30,3 +31,14 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str]
+
+
+class blockedToken(BaseModel):
+    jwt_token : str
+
+class blockedTokenData(blockedToken):
+    id: Optional[int]
+    created_at: datetime
+
+class blockedTokenCreate(blockedToken):
+    jwt_token: str

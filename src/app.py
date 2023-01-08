@@ -12,4 +12,9 @@ else:
     app = FastAPI(port=5000)
 
 
+@app.get("/healthcheck", include_in_schema=False)
+async def healthcheck() -> dict[str, str]:
+    return {"status": "ok"}
+
+
 app.include_router(user_router)
