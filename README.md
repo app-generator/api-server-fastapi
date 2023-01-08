@@ -9,7 +9,7 @@ Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via *
 | Status | Item | info | 
 | --- | --- | --- |
 | ✅ | **Up-to-date Dependencies** | - |
-| 🟨 | [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) |  the unified API structure implemented by this server |
+| ✅ | [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) |  the unified API structure implemented by this server |
 | ✅ | `JWT Authentication` |  (login, logout, register) via `oauth2` |
 | ✅ | **OAuth** | via GitHub` |
 | ✅ | **Persistence** | `SQLite`, `MySql` |
