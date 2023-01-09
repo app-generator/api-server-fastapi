@@ -56,10 +56,16 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
-@router.post('/login', response_model=schemas.Token)
-async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+# @router.post('/login', response_model=schemas.Token)
+@router.post('/login')
+# async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+async def login(request: Request, db: Session = Depends(get_db)):
+    
+    json_request = await request.json()
 
-    user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
+    user_credentials = schemas.UserLogin(email=json_request.get('email'), password=json_request.get('password'))
+    
+    user = db.query(models.User).filter(models.User.email == user_credentials.email).first()
 
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials")
@@ -70,9 +76,13 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Ses
     access_token = oauth2.create_access_token(data = {"user_id" : user.id})
 
     return {
-        "access_token" : access_token,
+        "token" : access_token,
         "token_type" : "bearer"
     }
+    # return {
+    #     "access_token" : access_token,
+    #     "token_type" : "bearer"
+    # }
 
 
 @router.put('/{id}', response_model=schemas.UserOut)
@@ -124,7 +134,7 @@ async def check_session(request: Request, current_user: int = Depends(oauth2.get
         token_type, token = bearer_token.split(' ')
         verified = oauth2.verify_access_token(token, credentials_exception)
         return {
-            "access_token" : token,
+            "token" : token,
             "token_type" : 'bearer'
         }
     
@@ -166,7 +176,7 @@ async def authorize_github(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing Authorization Code")
 
 
-@router.get('/logout', status_code=status.HTTP_200_OK)
+@router.post('/logout', status_code=status.HTTP_200_OK)
 async def logout(request: Request, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
         
     invalid_token = request.headers.get('authorization')

@@ -22,8 +22,7 @@ def test_checkSession_success(authorized_client):
     res = authorized_client.get("/api/users/checkSession/")
     res_json = res.json()
 
-
-    access_token = res_json['access_token']
+    access_token = res_json['token']
     token_type = res_json['token_type']
 
     verified = verify_access_token(access_token, credentials_exception)
@@ -69,14 +68,16 @@ def test_registration_fail(client):
 
 
 def test_login_success(client, test_user: schemas.UserOut):
-    res = client.post("/api/users/login", data={
-        "username" : test_user['email'],
+    res = client.post("/api/users/login", json={
+        "email" : test_user['email'],
         "password" : test_user['password']
     })
+    # res_json = await res.json()
+
 
     login_res = schemas.Token(**res.json())
 
-    payload = jwt.decode(login_res.access_token, settings.secret_key, algorithms=[settings.algorithm])
+    payload = jwt.decode(login_res.token, settings.secret_key, algorithms=[settings.algorithm])
 
     id = payload.get('user_id')
 
@@ -85,8 +86,8 @@ def test_login_success(client, test_user: schemas.UserOut):
     assert res.status_code == 200
 
 def test_login_fail_password(client, test_user: schemas.UserOut):
-    res = client.post("/api/users/login", data={
-        "username" : test_user['email'],
+    res = client.post("/api/users/login", json={
+        "email" : test_user['email'],
         "password" : "badpassword"
     })
 
@@ -95,8 +96,8 @@ def test_login_fail_password(client, test_user: schemas.UserOut):
     assert res.status_code == 403
 
 def test_login_fail_email(client, test_user: schemas.UserOut):
-    res = client.post("/api/users/login", data={
-        "username" : 'bademail',
+    res = client.post("/api/users/login", json={
+        "email" : 'bademail@gmail.com',
         "password" : test_user['password']
     })
 

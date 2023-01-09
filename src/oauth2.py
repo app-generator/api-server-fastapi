@@ -34,7 +34,6 @@ def verify_access_token(token: str, credentials_exception, db: Session = Depends
     try:
 
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        # print (token)
 
         id: str = payload.get("user_id")
 
@@ -57,13 +56,10 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
             headers={"WWW-Authenticate" : "Bearer"}
         )
 
-    # print (token)
     formatted_token = 'Bearer '+token
     token = verify_access_token(token, credentials_exception)
 
     user = db.query(models.User).filter(models.User.id == token.id).first()
-
-    print (formatted_token)
 
     formatted_token_match = db.query(models.JWTTokenBlocklist).filter(models.JWTTokenBlocklist.jwt_token==formatted_token).first()
 
