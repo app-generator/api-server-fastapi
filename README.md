@@ -33,7 +33,8 @@ $ cd api-server-fastapi
 $ docker-compose up --build  
 ```
 
-The API server will start using the PORT `5085`.
+Note: The `env.sample` file will be used to set the environment variables for the docker container. Make sure to set them as needed. 
+The API server will start using the PORT `5000`.
 
 <br />
 
@@ -79,25 +80,6 @@ $ pip install -r requirements.txt
 
 <br />
 
-> **Step #4** - setup `flask` command for our app
-
-```bash
-$ export FLASK_APP=run.py
-$ export FLASK_ENV=development
-```
-
- For **Windows-based** systems
-
-```powershell
-$ (Windows CMD) set FLASK_APP=run.py
-$ (Windows CMD) set FLASK_ENV=development
-$
-$ (Powershell) $env:FLASK_APP = ".\run.py"
-$ (Powershell) $env:FLASK_ENV = "development"
-```
-
-<br />
-
 > **Step #5** - Create a new `.env` file using sample `env.sample`
 
 The meaning of each variable can be found below: 
@@ -107,13 +89,23 @@ The meaning of each variable can be found below:
 - `SECRET_KEY`: used in assets management
 - `GITHUB_CLIENT_ID`: For GitHub social login
 - `GITHUB_SECRET_KEY`: For GitHub social login
+- `DATABASE_HOSTNAME`: For Mysql databse
+- `DATABASE_PORT`: For Mysql databse
+- `DATABASE_PASSWORD`: For Mysql databse
+- `DATABASE_NAME`: For Mysql databse
+- `DATABASE_USERNAME`: For Mysql databse
+- `ALGORITHM`: For JWT Tokens
+- `ACCESS_TOKEN_EXPIRE_MINUTES`: For JWT Tokens
+
+
+
 
 <br />
 
 > **Step #6** - start test APIs server at `localhost:5000`
 
 ```bash
-$ flask run
+$ uvicorn src.app:app
 ```
 
 Use the API via `POSTMAN` or Swagger Dashboard.
@@ -126,16 +118,28 @@ Use the API via `POSTMAN` or Swagger Dashboard.
 
 ```bash
 api-server-flask/
-├── api
-│   ├── config.py
+├── src
+    ├── helpers
+        ├── database.py
+        └── utils.py
+    ├── routers
+        ├── users.py
 │   ├── __init__.py
+│   ├── app.py
+│   ├── config.py
 │   ├── models.py
-│   └── routes.py
+│   ├── oatuh2.py
+│   └── schemas.py
+├── tests
+    ├── __init__.py
+    ├── conftest.py
+    ├── database.py
+    └── test_users.py
 ├── Dockerfile
+├── docker-compose.yaml
 ├── README.md
 ├── requirements.txt
 ├── run.py
-└── tests.py
 ```
 
 <br />

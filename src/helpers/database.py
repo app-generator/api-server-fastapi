@@ -20,8 +20,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-def get_session():
-    db = SessionLocal()
-    return db

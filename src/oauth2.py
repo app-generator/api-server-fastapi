@@ -14,8 +14,6 @@ import src.schemas as schemas
 
 from functools import wraps
 
-# from src.helpers.database import get_session
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 SECRET_KEY = settings.secret_key
