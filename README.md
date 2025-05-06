@@ -1,6 +1,11 @@
-## [FastAPI (API) Server](https://github.com/app-generator/api-server-fastapi)
+## [FastAPI](https://app-generator.dev/docs/technologies/fastapi/index.html) (API) Server
 
-Simple **FastAPI Boilerplate** enhanced with `JWT` authentication, `OAuth` via **GitHub**, `SqlAlchemy`, **SQLite** persistence and deployment scripts via Docker - Provided by **[AppSeed](https://appseed.us/)**. It has all the ready-to-use bare minimum essentials and `active versioning` and [support](https://appseed.us/support/).
+Simple [FastAPI](https://app-generator.dev/docs/technologies/fastapi/index.html) Starter enhanced with `JWT` authentication, `OAuth` via **GitHub**, `SqlAlchemy`, **SQLite** persistence and deployment scripts via Docker - Actively supported by [App-Generator](https://app-generator.dev/). 
+
+> 👉 For more [FastAPI Resources](https://app-generator.dev/docs/technologies/fastapi.html) please access:
+
+- [Getting Started with FastAPI](https://app-generator.dev/docs/technologies/fastapi/index.html)
+- [FastAPI Cheatsheet](https://app-generator.dev/docs/technologies/fastapi/cheatsheet.html)
 
 <br />
 
@@ -198,6 +203,6 @@ Run tests using `pytest tests.py`
 <br />
 
 ---
-**[FastAPI (API) Server](https://github.com/app-generator/api-server-fastapi)** - provided by [AppSeed](https://appseed.us)
+[FastAPI](https://app-generator.dev/docs/technologies/fastapi/index.html) (API) Server - Open-source eCommerce Starter provided by [App-Generator](https://app-generator.dev/).
 
 
