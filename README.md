@@ -14,7 +14,6 @@ Simple [FastAPI](https://app-generator.dev/docs/technologies/fastapi/index.html)
 | Status | Item | info | 
 | --- | --- | --- |
 | ✅ | **Up-to-date Dependencies** | - |
-| ✅ | [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) |  the unified API structure implemented by this server |
 | ✅ | `JWT Authentication` |  (login, logout, register) via `oauth2` |
 | ✅ | **OAuth** | via GitHub` |
 | ✅ | **Persistence** | `SQLite`, `MySql` |
